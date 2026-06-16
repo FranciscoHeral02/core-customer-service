@@ -1,0 +1,39 @@
+name: CI/CD Microservicio Clientes
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      # Ejecuta tus tests unitarios (JUnit + JaCoCo) para medir la cobertura de tu dominio rich
+      # Si un test falla, el pipeline se congela y no avanza al despliegue
+      - name: Compilar y Probar con Maven
+        run: mvn clean test
+
+  # LLAMADA DIRECTA A TU LIBRERÍA CENTRALIZADA REUTILIZABLE
+  deploy:
+    needs: build-and-test
+    # Apunta al repositorio central donde guardaste la plantilla estándar
+    uses: mi-organizacion/devops-templates/.github/workflows/deploy-msv-template.yml@master
+    with:
+      # Lógica dinámica: Si el push es en master va a k8s/prod/, si no va a k8s/dev/
+      capa: ${{ github.ref_name == 'master' && 'prod' || 'dev' }}
+    secrets:
+      APP_ID: ${{ secrets.GLOBAL_GH_APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.GLOBAL_GH_APP_PRIVATE_KEY }}
+      KUBE_CONFIG: ${{ secrets.GLOBAL_KUBE_CONFIG }}
