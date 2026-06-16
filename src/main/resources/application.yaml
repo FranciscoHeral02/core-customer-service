@@ -1,0 +1,24 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:postgres-service.database.svc.cluster.local}:${DB_PORT:5432}/${DB_NAME:client_db_dev}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: false
+        format_sql: false
+  springdoc:
+    api-docs:
+      enabled: false
+    swagger-ui:
+      enabled: false
+  server:
+    port: 8080

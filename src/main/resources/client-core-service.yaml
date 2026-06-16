@@ -1,0 +1,281 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Client Core & Risk Service API
+  description: 'API unificada para la gestión de identidad legal, contacto y perfil de riesgo/crédito bajo Arquitectura Hexagonal y DDD.'
+paths:
+  /api/v1/customers:
+    post:
+      tags:
+        - Customer
+      summary: Crear un nuevo cliente con su perfil financiero y de riesgo inicial
+      operationId: createCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        '201':
+          description: Cliente y perfil de riesgo registrados exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Validación fallida (Campos obligatorios o formatos incorrectos).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '409':
+          description: Conflicto - El cliente ya existe en el sistema (Manejado por excepción de aplicación).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/api/v1/customers/{id}':
+    get:
+      tags:
+        - Customer
+      summary: Obtener el perfil completo de un cliente por su ID
+      operationId: getCustomerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            examples:
+              - CLI-88231
+      responses:
+        '200':
+          description: 'Operación exitosa. Retorna identidad, contacto y perfil financiero.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '404':
+          description: El cliente solicitado no existe.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - Customer
+      summary: 'Actualizar datos de identidad, contacto o financiero del cliente'
+      operationId: updateCustomer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        '200':
+          description: Cliente actualizado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+tags:
+  - name: Customer
+    description: informacion de clientes
+components:
+  schemas:
+    CustomerRequest:
+      type: object
+      properties:
+        docType:
+          type: string
+          description: 'Tipo de documento legal (DNI, RUC, PASAPORTE)'
+          examples:
+            - RUC
+        docNum:
+          type: string
+          description: Número de documento de identidad
+          maxLength: 19
+          examples:
+            - '20123456789'
+        name:
+          type: string
+          maxLength: 100
+          examples:
+            - Corporación Inka S.A.C.
+        type:
+          type: string
+          enum:
+            - RETAIL
+            - ENTERPRISE
+            - VIP
+          examples:
+            - ENTERPRISE
+        email:
+          type: string
+          format: email
+          examples:
+            - contacto@inkacorp.com
+        contactPerson:
+          type: string
+          maxLength: 90
+          examples:
+            - Juan Perez (Gerente Comercial)
+        contactInfo:
+          $ref: '#/components/schemas/ContactInfo'
+        financialProfile:
+          $ref: '#/components/schemas/FinancialProfile'
+      required:
+        - docType
+        - docNum
+        - name
+        - type
+    ContactInfo:
+      type: object
+      properties:
+        telephone1:
+          type: string
+          maxLength: 20
+          examples:
+            - '+51999888777'
+        telephone2:
+          type: string
+          maxLength: 20
+          examples:
+            - '+51999888666'
+        address:
+          type: string
+          maxLength: 255
+          examples:
+            - 'Av. Larco 123, Miraflores, Lima'
+    FinancialProfile:
+      type: object
+      properties:
+        creditScore:
+          type: integer
+          description: Puntuación de buró de crédito (Score interno/externo)
+          minimum: 300
+          maximum: 850
+          examples:
+            - 715
+        riskCategory:
+          type: string
+          enum:
+            - LOW
+            - MEDIUM
+            - HIGH
+          examples:
+            - LOW
+        hasCreditAlert:
+          type: boolean
+          description: Indica si posee bloqueos o moras activas en centrales de riesgo
+          examples:
+            - false
+        activeAlerts:
+          type: array
+          description: Listado detallado de alertas activas (Almacenado como JSONB)
+          examples:
+            - - MORA_MAYOR_30_DIAS
+              - SITUACION_REESTRUCTURADO
+          items:
+            type: string
+    CustomerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+            - CLI-88231
+        docType:
+          type: string
+          examples:
+            - RUC
+        docNum:
+          type: string
+          examples:
+            - '20123456789'
+        name:
+          type: string
+          examples:
+            - Corporación Inka S.A.C.
+        type:
+          type: string
+          examples:
+            - ENTERPRISE
+        email:
+          type: string
+          examples:
+            - contacto@inkacorp.com
+        contactPerson:
+          type: string
+          examples:
+            - Juan Perez
+        valid:
+          type: boolean
+          description: Estado de activación lógica en el sistema comercial
+          examples:
+            - true
+        contactInfo:
+          $ref: '#/components/schemas/ContactInfo'
+        financialProfile:
+          $ref: '#/components/schemas/FinancialProfile'
+    ValidationErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          examples:
+            - '2026-06-15T11:21:00Z'
+        status:
+          type: integer
+          examples:
+            - 400
+        error:
+          type: string
+          examples:
+            - Bad Request
+        fields:
+          type: object
+          description: 'Mapa de campos que fallaron las anotaciones de validación (@NotBlank, @Size, etc.)'
+          additionalProperties:
+            type: string
+          examples:
+            - docNum: El número de documento es obligatorio
+              email: El formato del correo electrónico no es válido
+        path:
+          type: string
+          examples:
+            - /api/v1/customers
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          examples:
+            - '2026-06-15T11:20:00Z'
+        status:
+          type: integer
+          examples:
+            - 409
+        error:
+          type: string
+          examples:
+            - Conflict
+        message:
+          type: string
+          description: Mensaje internacionalizado (i18n) traducido por el servidor
+          examples:
+            - El Business Partner con ID CLI-88231 ya existe en el sistema.
+        path:
+          type: string
+          examples:
+            - /api/v1/customers
