@@ -33,7 +33,4 @@ jobs:
     with:
       # Lógica dinámica: Si el push es en master va a k8s/prod/, si no va a k8s/dev/
       capa: ${{ github.ref_name == 'master' && 'prod' || 'dev' }}
-    secrets:
-      APP_ID: ${{ secrets.GLOBAL_GH_APP_ID }}
-      APP_PRIVATE_KEY: ${{ secrets.GLOBAL_GH_APP_PRIVATE_KEY }}
-      KUBE_CONFIG: ${{ secrets.GLOBAL_KUBE_CONFIG }}
+    secrets: inherit
