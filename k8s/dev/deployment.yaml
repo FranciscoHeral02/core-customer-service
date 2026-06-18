@@ -29,13 +29,9 @@ spec:
           ports:
             - containerPort: 8080
               name: http
-
-          # CONTROL NATIVO DE VARIABLES (Alineado con tu YAML de Spring)
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "dev"
-
-            # --- 1. CONFIGURACIÓN DE POSTGRESQL (VÍA PGBOUNCER EN PUERTO 6432) ---
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
@@ -56,8 +52,6 @@ spec:
                 secretKeyRef:
                   name: core-client-service-doppler-secret
                   key: DB_PASSWORD
-
-            # --- 2. CONFIGURACIÓN DE APACHE KAFKA (SASL_SSL / CONFLUENT CLOUD) ---
             - name: KAFKA_SERVERS
               valueFrom:
                 secretKeyRef:
@@ -72,9 +66,8 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: core-client-service-doppler-secret
-                  key: CONFLUENT_API_KEY # Tu string completo: 'org.apache.kafka.common.security.plain.PlainLoginModule required...'
-
-          # SONDAS DE SALUD DE SPRING ACTUATOR (Escuchando en el puerto 8080)
+                  key: CONFLUENT_API_KEY
+                  
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
