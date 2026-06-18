@@ -1,4 +1,4 @@
-package dev.devfheral.coreclientservice.infrastructure.adapters.outbound.jpa;
+package dev.devfheral.coreclientservice.infrastructure.adapters.outbound.jpa.entity;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -18,6 +18,7 @@ import lombok.Setter;
 public class CustomerEntity {
 
     @Id
+    String customerId;
     String docType;
     String docNum;
     String name;

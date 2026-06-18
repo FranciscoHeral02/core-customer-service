@@ -17,6 +17,21 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
         format_sql: true
+  kafka:
+    bootstrap-servers: pkc-921jm.us-east-2.aws.confluent.cloud:9092
+    client-id: ccloud-springboot-client-9830479a-81e9-46d4-8a82-3a53362d0096
+    properties:
+      security.protocol: SASL_SSL
+      sasl:
+        mechanism: PLAIN
+        jaas:
+          config: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="GHDBY52Y2R35HMDH" password="cfltvtPzIJovGtIo5rB/P0wTj7w2bv7uLcYZozDRDuA4nXIy8r0MT0UIjfRwMJkQ";'
+      session.timeout.ms: 45000
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        acks: all
 springdoc:
   api-docs:
     enabled: true
@@ -26,3 +41,7 @@ springdoc:
     path: /swagger-ui.html
 server:
   port: 8080
+app:
+  kafka:
+    customer-topic: core.customer.events
+

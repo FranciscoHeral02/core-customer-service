@@ -3,13 +3,15 @@ package dev.devfheral.coreclientservice.infrastructure.adapters.outbound.jpa;
 import dev.devfheral.coreclientservice.domain.model.Customer;
 import dev.devfheral.coreclientservice.domain.ports.CustomerRepositoryPort;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class CustomerAdapter implements CustomerRepositoryPort {
+@Slf4j
+public class CustomerJpaAdapter implements CustomerRepositoryPort {
     private final CustomerJpaRepository jpaRepository;
     private final CustomerMapper mapper;
 

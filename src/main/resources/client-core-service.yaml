@@ -189,7 +189,7 @@ components:
     CustomerResponse:
       type: object
       properties:
-        id:
+        customerId:
           type: string
           examples:
             - CLI-88231

@@ -1,4 +1,4 @@
-package dev.devfheral.coreclientservice.infrastructure.adapters.outbound.jpa;
+package dev.devfheral.coreclientservice.infrastructure.adapters.outbound.jpa.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

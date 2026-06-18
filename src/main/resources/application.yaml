@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:postgresql://${DB_HOST:postgres-service.database.svc.cluster.local}:${DB_PORT:5432}/${DB_NAME:client_db_dev}
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -15,6 +15,21 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: false
         format_sql: false
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS}
+    client-id: ${KAFKA_CLIENT_ID}
+    properties:
+      security.protocol: SASL_SSL
+      sasl:
+        mechanism: PLAIN
+        jaas:
+          config: ${CONFLUENT_API_KEY}
+      session.timeout.ms: 45000
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        acks: all
   springdoc:
     api-docs:
       enabled: false

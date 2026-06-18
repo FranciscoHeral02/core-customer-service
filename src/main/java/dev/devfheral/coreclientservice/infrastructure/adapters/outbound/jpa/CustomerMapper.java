@@ -1,6 +1,7 @@
 package dev.devfheral.coreclientservice.infrastructure.adapters.outbound.jpa;
 
 import dev.devfheral.coreclientservice.domain.model.Customer;
+import dev.devfheral.coreclientservice.infrastructure.adapters.outbound.jpa.entity.CustomerEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 

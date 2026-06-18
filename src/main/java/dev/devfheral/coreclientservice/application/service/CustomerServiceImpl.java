@@ -4,17 +4,21 @@ import dev.devfheral.coreclientservice.application.exceptions.CustomerNotFoundEx
 import dev.devfheral.coreclientservice.application.ports.CustomerServicePort;
 import dev.devfheral.coreclientservice.application.exceptions.CustomerAlreadyExistsException;
 import dev.devfheral.coreclientservice.domain.model.Customer;
+import dev.devfheral.coreclientservice.domain.ports.CustomerEventPublisherPort;
 import dev.devfheral.coreclientservice.domain.ports.CustomerRepositoryPort;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CustomerServiceImpl implements CustomerServicePort {
 
     private final CustomerRepositoryPort repositoryPort;
+    private final CustomerEventPublisherPort eventPublisherPort;
 
     @Override
     public Customer createNewCustomer(Customer partner) {
@@ -24,7 +28,10 @@ public class CustomerServiceImpl implements CustomerServicePort {
         if (repositoryPort.existsById(partnerWithId.getCustomerId())) {
             throw new CustomerAlreadyExistsException();
         }
-        return repositoryPort.save(partnerWithId);
+        Customer savedCustomer = repositoryPort.save(partnerWithId);
+        eventPublisherPort.publishCustomerCreated(savedCustomer);
+
+        return savedCustomer;
     }
 
     @Transactional(readOnly = true)
@@ -38,7 +45,10 @@ public class CustomerServiceImpl implements CustomerServicePort {
         if (!repositoryPort.existsById(id)) {
             throw new CustomerNotFoundException();
         }
-        return repositoryPort.save(partner);
+        Customer updatedCustomer = repositoryPort.save(partner);
+        eventPublisherPort.publishCustomerUpdated(updatedCustomer);
+
+        return updatedCustomer;
     }
 
 }
