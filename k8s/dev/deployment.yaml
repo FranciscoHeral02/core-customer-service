@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: core-client-service
-  namespace: core-banking
+  namespace: apps
   labels:
     app: core-client-service
   annotations:
