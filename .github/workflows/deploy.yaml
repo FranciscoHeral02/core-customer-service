@@ -86,10 +86,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set kubeconfig
-        run: |
-          echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig
-          export KUBECONFIG=$PWD/kubeconfig
+      - name: Set K8s context
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
       - name: Deploy new image
         run: |
