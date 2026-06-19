@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: FranciscoHeral02/core-client-service:latest
+          image: franciscoheral02/core-client-service:${{ github.sha }}
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -35,37 +35,37 @@ spec:
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: DB_HOST
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: DB_NAME
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: DB_USERNAME
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: DB_PASSWORD
             - name: KAFKA_SERVERS
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: KAFKA_SERVERS
             - name: KAFKA_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: KAFKA_CLIENT_ID
             - name: CONFLUENT_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: CONFLUENT_API_KEY
                   
           livenessProbe:
@@ -92,3 +92,20 @@ spec:
             requests:
               cpu: "250m"
               memory: "350Mi"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: core-client-service
+  namespace: apps
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: core-client-service
