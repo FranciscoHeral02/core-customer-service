@@ -139,7 +139,7 @@
 						<env>
 							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
 							<BP_JVM_VERSION>25</BP_JVM_VERSION>
-							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>--initialize-at-run-time=java.io.Console,java.io.ProxyingConsole,sun.security.util.Password,sun.security.util.Password$ConsoleHolder --initialize-at-build-time=org.hibernate.jpa.internal.JpaLogger</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>--initialize-at-run-time=java.io.Console,java.io.ProxyingConsole,sun.security.util.Password,sun.security.util.Password$ConsoleHolder </BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 						</env>
 					</image>
 					<excludes>
