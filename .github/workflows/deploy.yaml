@@ -3,6 +3,9 @@ name: CI/CD Microservicio Clientes
 on:
   push:
     branches: [develop, master]
+    paths-ignore:
+      - 'README.md'
+      - '.github/workflows/deploy.yaml'
 env:
   IMAGE: docker.io/franciscoheral02/core-client-service
 
