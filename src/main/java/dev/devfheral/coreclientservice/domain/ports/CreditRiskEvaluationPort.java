@@ -6,3 +6,4 @@ import dev.devfheral.coreclientservice.domain.model.FinancialProfile;
 public interface CreditRiskEvaluationPort {
   FinancialProfile getCreditRiskProfile(Customer customer);
 }
+
