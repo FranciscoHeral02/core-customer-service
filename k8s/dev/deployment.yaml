@@ -92,18 +92,3 @@ spec:
             requests:
               cpu: "250m"
               memory: "350Mi"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: core-client-service
-  namespace: apps
-spec:
-  type: ClusterIP
-  ports:
-    - port: 8080
-      targetPort: 8080
-      protocol: TCP
-      name: http
-  selector:
-    app: core-client-service
