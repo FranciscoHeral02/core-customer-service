@@ -113,6 +113,12 @@
 			<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
 				<artifactId>native-maven-plugin</artifactId>
+				<configuration>
+					<buildArgs>
+						<buildArg>--initialize-at-run-time=sun.security.util.Password$ConsoleHolder</buildArg>
+						<buildArg>--initialize-at-run-time=java.io.ProxyingConsole</buildArg>
+					</buildArgs>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -123,10 +129,6 @@
 						<env>
 							<BP_JVM_VERSION>21</BP_JVM_VERSION>
 						</env>
-						<buildArgs>
-							<buildArg>--initialize-at-run-time=sun.security.util.Password$ConsoleHolder</buildArg>
-							<buildArg>--initialize-at-run-time=java.io.ProxyingConsole</buildArg>
-						</buildArgs>
 					</image>
 					<excludes>
 						<exclude>
