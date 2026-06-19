@@ -13,32 +13,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class CustomerRestController implements CustomerApi{
+public class CustomerRestController implements CustomerApi {
 
-    private final CustomerServicePort servicePort;
-    private final CustomerHttpMapper httpMapper;
+  private final CustomerServicePort servicePort;
+  private final CustomerHttpMapper httpMapper;
 
-    @Override
-    public ResponseEntity<CustomerResponse> createCustomer(CustomerRequest customerRequest) {
+  @Override
+  public ResponseEntity<CustomerResponse> createCustomer(CustomerRequest customerRequest) {
 
-        Customer customer = servicePort.createNewCustomer(httpMapper.toDomain(customerRequest));
-        CustomerResponse customerResponse = httpMapper.toResponse(customer);
+    Customer customer = servicePort.createNewCustomer(httpMapper.toDomain(customerRequest));
+    CustomerResponse customerResponse = httpMapper.toResponse(customer);
 
-        return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
-    }
+    return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
+  }
 
-    @Override
-    public ResponseEntity<CustomerResponse> getCustomerById(String id) {
-        Customer customer = servicePort.findCustomerById(id);
-        CustomerResponse customerResponse = httpMapper.toResponse(customer);
-        return new ResponseEntity<>(customerResponse, HttpStatus.OK);
-    }
+  @Override
+  public ResponseEntity<CustomerResponse> getCustomerById(String id) {
+    Customer customer = servicePort.findCustomerById(id);
+    CustomerResponse customerResponse = httpMapper.toResponse(customer);
+    return new ResponseEntity<>(customerResponse, HttpStatus.OK);
+  }
 
-    @Override
-    public ResponseEntity<CustomerResponse> updateCustomer(String id, CustomerRequest customerRequest) {
-        Customer customer = servicePort.updateCustomer(id, httpMapper.toDomain(customerRequest));
-        CustomerResponse customerResponse = httpMapper.toResponse(customer);
+  @Override
+  public ResponseEntity<CustomerResponse> updateCustomer(String id,
+                                                         CustomerRequest customerRequest) {
+    Customer customer = servicePort.updateCustomer(id, httpMapper.toDomain(customerRequest));
+    CustomerResponse customerResponse = httpMapper.toResponse(customer);
 
-        return ResponseEntity.ok().body(customerResponse);
-    }
+    return ResponseEntity.ok().body(customerResponse);
+  }
 }

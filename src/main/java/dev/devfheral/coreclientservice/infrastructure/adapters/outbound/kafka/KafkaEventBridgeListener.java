@@ -16,24 +16,26 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 public class KafkaEventBridgeListener {
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+  private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    @Value("${app.kafka.customer-topic}")
-    private String customerTopic;
+  @Value("${app.kafka.customer-topic}")
+  private String customerTopic;
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handleCustomerCreated(Customer customer) {
-        CustomerKafkaPayload payload = new CustomerKafkaPayload(CustomerEventType.CUSTOMER_CREATED, customer);
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+  public void handleCustomerCreated(Customer customer) {
+    CustomerKafkaPayload payload = new CustomerKafkaPayload(CustomerEventType.CUSTOMER_CREATED,
+            customer);
 
-        kafkaTemplate.send(customerTopic, String.valueOf(customer.getCustomerId()), payload);
-    }
+    kafkaTemplate.send(customerTopic, String.valueOf(customer.getCustomerId()), payload);
+  }
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handleCustomerUpdated(Customer customer) {
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+  public void handleCustomerUpdated(Customer customer) {
 
-        CustomerKafkaPayload payload = new CustomerKafkaPayload(CustomerEventType.CUSTOMER_UPDATED, customer);
+    CustomerKafkaPayload payload = new CustomerKafkaPayload(CustomerEventType.CUSTOMER_UPDATED,
+            customer);
 
-        kafkaTemplate.send(customerTopic, String.valueOf(customer.getCustomerId()), payload);
-    }
+    kafkaTemplate.send(customerTopic, String.valueOf(customer.getCustomerId()), payload);
+  }
 }
 

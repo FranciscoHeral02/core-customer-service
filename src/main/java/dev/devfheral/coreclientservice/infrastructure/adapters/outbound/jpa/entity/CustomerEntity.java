@@ -17,19 +17,19 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CustomerEntity {
 
-    @Id
-    String customerId;
-    String docType;
-    String docNum;
-    String name;
-    String type;
-    String contactPerson;
-    String email;
-    Boolean valid;
+  @Id
+  String customerId;
+  String docType;
+  String docNum;
+  String name;
+  String type;
+  String contactPerson;
+  String email;
+  Boolean valid;
 
-    @Embedded
-    private ContactInfoEmbeddable contactInfo;
+  @Embedded
+  private ContactInfoEmbeddable contactInfo;
 
-    @Embedded
-    private FinancialProfileEmbeddable financialProfile;
+  @Embedded
+  private FinancialProfileEmbeddable financialProfile;
 }

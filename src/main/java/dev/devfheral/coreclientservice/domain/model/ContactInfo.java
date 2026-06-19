@@ -4,7 +4,7 @@ import lombok.Value;
 
 @Value
 public class ContactInfo {
-    String telephone1;
-    String telephone2;
-    String address;
+  String telephone1;
+  String telephone2;
+  String address;
 }

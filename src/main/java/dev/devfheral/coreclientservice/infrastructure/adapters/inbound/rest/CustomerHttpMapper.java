@@ -10,9 +10,9 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CustomerHttpMapper {
 
-    @Mapping(target = "customerId", ignore = true)
-    @Mapping(target = "valid", ignore = true)
-    Customer toDomain(CustomerRequest customerResponse);
+  @Mapping(target = "customerId", ignore = true)
+  @Mapping(target = "valid", ignore = true)
+  Customer toDomain(CustomerRequest customerResponse);
 
-    CustomerResponse toResponse(Customer  customer);
+  CustomerResponse toResponse(Customer customer);
 }
