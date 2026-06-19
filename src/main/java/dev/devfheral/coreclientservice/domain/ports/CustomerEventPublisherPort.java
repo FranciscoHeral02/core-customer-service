@@ -7,3 +7,4 @@ public interface CustomerEventPublisherPort {
 
   void publishCustomerUpdated(Customer customer);
 }
+
