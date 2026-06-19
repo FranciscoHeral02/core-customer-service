@@ -86,6 +86,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Set K8s context
         uses: azure/k8s-set-context@v3
         with:
