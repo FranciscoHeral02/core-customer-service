@@ -94,6 +94,10 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
+      - name: Replace image tag in manifest
+        run: |
+          sed -i "s/VERSION_TAG/${{ github.sha }}/g" k8s/dev/deployment.yaml
+
       - name: Deploy (create or update)
         run: | 
           kubectl apply -f k8s/dev/
