@@ -119,9 +119,13 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
+						<builder>paketobuildpacks/builder-jammy-tiny:latest</builder>
 						<env>
 							<BP_JVM_VERSION>21</BP_JVM_VERSION>
+							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+								--trace-object-instantiation=java.io.ProxyingConsole
+							</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 						</env>
 					</image>
 					<excludes>
