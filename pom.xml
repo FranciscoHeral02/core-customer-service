@@ -124,7 +124,7 @@
 							<BP_JVM_VERSION>21</BP_JVM_VERSION>
 							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
 							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
-								--trace-object-instantiation=java.io.ProxyingConsole
+								--initialize-at-run-time=com.oracle.svm.hosted.ProgressReporter
 							</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 						</env>
 					</image>
