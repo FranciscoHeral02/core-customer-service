@@ -2,36 +2,48 @@ name: CI/CD Microservicio Clientes
 
 on:
   push:
-    branches:
-      - develop
-      - master
-
+    branches: [develop, master]
+    paths-ignore:
+      - .github/workflows/**
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout del código
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configurar Java JDK 21
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'temurin'
-          cache: 'maven'
+          distribution: temurin
+          cache: maven
 
-      # Ejecuta tus tests unitarios (JUnit + JaCoCo) para medir la cobertura de tu dominio rich
-      # Si un test falla, el pipeline se congela y no avanza al despliegue
-      - name: Compilar y Probar con Maven
+      - name: Tests
         run: mvn clean test
 
-  # LLAMADA DIRECTA A TU LIBRERÍA CENTRALIZADA REUTILIZABLE
+      - name: Package
+        run: mvn clean package -DskipTests
+
+      - name: Build Image
+        run: |
+          mvn spring-boot:build-image \
+            -Dspring-boot.build-image.imageName=franciscoheral02/core-client-service:${{ github.sha }}
+
+      - name: Login DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push Image
+        run: |
+          docker push franciscoheral02/core-client-service:${{ github.sha }}
+
   deploy:
-    needs: build-and-test
-    # Apunta al repositorio central donde guardaste la plantilla estándar
+    needs: build
     uses: FranciscoHeral02/devops-templates/.github/workflows/deploy-msv-template.yaml@master
     with:
-      # Lógica dinámica: Si el push es en master va a k8s/prod/, si no va a k8s/dev/
       capa: ${{ github.ref_name == 'master' && 'prod' || 'dev' }}
     secrets: inherit
-      
