@@ -67,7 +67,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t $IMAGE:${{ github.sha }} .
+          mvn spring-boot:build-image \
+            -Dspring-boot.build-image.imageName=$IMAGE:${{ github.sha }}
 
       - name: Push Docker image
         run: |
