@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: FranciscoHeral02/core-client-service:latest
+          image: franciscoheral02/core-client-service:${{ github.sha }}
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
