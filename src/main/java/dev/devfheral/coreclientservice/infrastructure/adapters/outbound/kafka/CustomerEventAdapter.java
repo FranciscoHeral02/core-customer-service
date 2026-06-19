@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CustomerEventAdapter implements CustomerEventPublisherPort {
 
-    private final ApplicationEventPublisher applicationEventPublisher;
+  private final ApplicationEventPublisher applicationEventPublisher;
 
-    @Override
-    public void publishCustomerCreated(Customer customer) {
+  @Override
+  public void publishCustomerCreated(Customer customer) {
 
-        applicationEventPublisher.publishEvent(customer);
-    }
+    applicationEventPublisher.publishEvent(customer);
+  }
 
-    @Override
-    public void publishCustomerUpdated(Customer customer) {
-        applicationEventPublisher.publishEvent(customer);
-    }
+  @Override
+  public void publishCustomerUpdated(Customer customer) {
+    applicationEventPublisher.publishEvent(customer);
+  }
 }
