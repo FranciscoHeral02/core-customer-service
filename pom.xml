@@ -8,7 +8,7 @@
 		<version>4.0.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ddev.devfheral.coreclientservice</groupId>
+	<groupId>dev.devfheral.coreclientservice</groupId>
 	<artifactId>core-client-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>core-client-service</name>
@@ -126,10 +126,10 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--plugin>
+			<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
 				<artifactId>native-maven-plugin</artifactId>
-			</plugin-->
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -139,7 +139,7 @@
 						<env>
 							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
 							<BP_JVM_VERSION>25</BP_JVM_VERSION>
-							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>--initialize-at-run-time=java.io.Console,java.io.ProxyingConsole,sun.security.util.Password,sun.security.util.Password$ConsoleHolder</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>--initialize-at-run-time=java.io.Console,java.io.ProxyingConsole,sun.security.util.Password,sun.security.util.Password$ConsoleHolder --initialize-at-build-time=org.hibernate.jpa.internal.JpaLogger</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 						</env>
 					</image>
 					<excludes>
