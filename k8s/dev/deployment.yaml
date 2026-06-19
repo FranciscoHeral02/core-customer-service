@@ -35,37 +35,37 @@ spec:
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: DB_HOST
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: DB_NAME
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: DB_USERNAME
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: DB_PASSWORD
             - name: KAFKA_SERVERS
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: KAFKA_SERVERS
             - name: KAFKA_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: KAFKA_CLIENT_ID
             - name: CONFLUENT_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: core-client-service-doppler-secret
+                  name: api-secrets
                   key: CONFLUENT_API_KEY
                   
           livenessProbe:
