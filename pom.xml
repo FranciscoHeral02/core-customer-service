@@ -138,6 +138,7 @@
 						<builder>paketobuildpacks/builder-jammy-tiny:latest</builder>
 						<env>
 							<BP_JVM_VERSION>25</BP_JVM_VERSION>
+							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>--initialize-at-build-time=java.io.ProxyingConsole</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 						</env>
 					</image>
 					<excludes>
