@@ -1,9 +1,6 @@
 spring:
   application:
     name: core-client-service
-  config:
-    activate:
-      on-profile: local
   datasource:
     url: jdbc:postgresql://localhost:6432/devfheral
     username: app-msv-dev
@@ -44,4 +41,3 @@ server:
 app:
   kafka:
     customer-topic: core.customer.events
-
