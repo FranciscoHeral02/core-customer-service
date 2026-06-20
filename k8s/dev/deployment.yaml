@@ -30,8 +30,6 @@ spec:
             - containerPort: 8080
               name: http
           env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: "dev"
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
